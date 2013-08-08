@@ -1,0 +1,29 @@
+body {
+  background: #fafafa;
+  font-family: Arial, sans-serif;
+}
+.collapse-Me {
+  width: 980px;
+  margin: 50px auto;
+  background: #f6f6f6;
+  padding: 20px;
+}
+.collapse-Me p {
+  margin: 0;
+}
+.collapse-Me .content {
+  padding-bottom: 20px;
+}
+.collapse-Me h2 {
+  font-weight: 400;
+  padding: 5px 0px;
+  margin: 0;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid white;
+}
+.collapse-Me article {
+  cursor: pointer;
+}
+.collapse-Me article.expanded {
+  background: #fff;
+}

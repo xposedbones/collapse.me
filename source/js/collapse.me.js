@@ -1,62 +1,81 @@
 (function($) {
 
-	//MUST HAVE THIS STRUCTURE FOR THE PLUGIN TO WORK
-	//<section id="collapse">
-	//	<article>
-	//		<h2></h2>
-	//		<div class="content"></div>
-	//	</article>
-	//</section>
+    //MUST HAVE THIS STRUCTURE FOR THE PLUGIN TO WORK
+    //<section id="collapse">
+    //  <article>
+    //      <h2></h2>
+    //      <div class="content"></div>
+    //  </article>
+    //</section>
 
-	$.fn.collapseMe = function(options){
-		this.addClass("collapse-Me")
-		var defaults = {
+    $.fn.collapseMe = function(options){
+        this.addClass("collapse-Me");
+        var defaults = {
            speed : 500,
            closeText: "-",
            openText: "+",
-           color: "#000000"
+           color: "#000000",
+           addCSS: true,
+           beforeOpen: function(){},
+           afterOpen: function(){},
+           beforeClose: function(){},
+
+           stepOpen: function(){},
+           stepClose: function(){}
         };
-        var options = $.extend(defaults, options);
+        options = $.extend(defaults, options);
 
-		var content = this.children('article').children('.content');
-		var article = this.children('article');
+        var content = this.children('article').children('.content');
+        var article = this.children('article');
 
-		article.each(function(){
-			$(this).append("<span class='collapse-icon'>"+options['openText']+"</span>");
-		});
+        article.each(function(){
+            $(this).append("<span class='collapse-icon'>"+options['openText']+"</span>");
+        });
 
-		content.css('display','none');
-		article.css('position','relative');
-		$('span.collapse-icon').css({
-			"position":"absolute",
-			"top":"13px",
-			"right":"10px",
-			"font-size": "15px",
+        content.css('display','none');
+        if(options['addCSS']){
 
-			"color": options['color']
+            article.css('position','relative');
 
-		});
+            $('span.collapse-icon').css({
+                "position":"absolute",
+                "top":"13px",
+                "right":"10px",
+                "font-size": "15px",
+                "color": options['color']
 
-		article.click(function(){
-		var $this = $(this);
-	
-		if($this.hasClass('expanded')){
-			$(".collapse-icon").html(options['openText']);
-			$this.children('.collapse-icon').html(options['openText']);
-			content.slideUp(options['speed'],function(){
-				$this.removeClass('expanded');
-			});
-		}else{
-			$(".collapse-icon").html(options['openText']);
-			content.slideUp(options['speed'],function(){
-				$(this).parent('article').removeClass('expanded');
-			});
-			$this.children('.content').slideDown(options['speed']);
-			$this.addClass('expanded');
-			$this.children('.collapse-icon').html(options['closeText']);
-		}
-		
-		});
+            });
+        }
 
-	}
+        article.click(function(){
+        var $this = $(this);
+
+        if($this.hasClass('expanded')){
+            $(".collapse-icon").html(options['openText']);
+            $this.children('.collapse-icon').html(options['openText']);
+            options['beforeClose'].call(this);
+            content.slideUp({
+                duration: options['speed'],
+                step: options['stepClose']
+            });
+            $this.removeClass('expanded');
+        }else{
+            $(".collapse-icon").html(options['openText']);
+            content.slideUp(options['speed'],function(){
+                $(this).parent('article').removeClass('expanded');
+            });
+
+            options['beforeOpen'].call(this);
+            $this.children('.content').slideDown({
+                duration: options['speed'],
+                complete: options['afterOpen'],
+                step: options['stepOpen']
+            });
+            $this.addClass('expanded');
+            $this.children('.collapse-icon').html(options['closeText']);
+        }
+
+        });
+
+    };
 }(jQuery));

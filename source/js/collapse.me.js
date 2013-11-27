@@ -16,6 +16,8 @@
            openText: "+",
            color: "#000000",
            addCSS: true,
+           applyTo: "article",
+           contentClass: ".content",
            beforeOpen: function(){},
            afterOpen: function(){},
            beforeClose: function(){},
@@ -25,8 +27,8 @@
         };
         options = $.extend(defaults, options);
 
-        var content = this.children('article').children('.content');
-        var article = this.children('article');
+        var content = this.children(options['applyTo']).children(options['contentClass']);
+        var article = this.children(options['applyTo']);
 
         article.each(function(){
             $(this).append("<span class='collapse-icon'>"+options['openText']+"</span>");
@@ -62,11 +64,11 @@
         }else{
             $(".collapse-icon").html(options['openText']);
             content.slideUp(options['speed'],function(){
-                $(this).parent('article').removeClass('expanded');
+                $(this).parent(options['applyTo']).removeClass('expanded');
             });
 
             options['beforeOpen'].call(this);
-            $this.children('.content').slideDown({
+            $this.children(options['contentClass']).slideDown({
                 duration: options['speed'],
                 complete: options['afterOpen'],
                 step: options['stepOpen']

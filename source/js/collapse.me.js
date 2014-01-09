@@ -18,23 +18,28 @@
            addCSS: true,
            applyTo: "article",
            contentClass: ".content",
+           clickItem:false,
            beforeOpen: function(){},
            afterOpen: function(){},
            beforeClose: function(){},
+           afterClose: function(){},
 
            stepOpen: function(){},
            stepClose: function(){}
         };
         options = $.extend(defaults, options);
 
-        var content = this.children(options['applyTo']).children(options['contentClass']);
-        var article = this.children(options['applyTo']);
+        var content = this.find(options['applyTo']).find(options['contentClass']);
+        var article = this.find(options['applyTo']);
 
+        article.addClass("collapse-item");
         article.each(function(){
-            $(this).append("<span class='collapse-icon'>"+options['openText']+"</span>");
+            $(this).append("<span class='collapse-icon collapse-cursor'>"+options['openText']+"</span>");
         });
 
         content.css('display','none');
+        content.addClass("collapse-content");
+
         if(options['addCSS']){
 
             article.css('position','relative');
@@ -49,35 +54,56 @@
             });
         }
 
-        article.click(function(){
-        var $this = $(this);
-
-        if($this.hasClass('expanded')){
-            $(".collapse-icon").html(options['openText']);
-            $this.children('.collapse-icon').html(options['openText']);
-            options['beforeClose'].call(this);
-            content.slideUp({
-                duration: options['speed'],
-                step: options['stepClose']
-            });
-            $this.removeClass('expanded');
+        if(options['clickItem']){
+        	whats_clicked = article
         }else{
-            $(".collapse-icon").html(options['openText']);
-            content.slideUp(options['speed'],function(){
-                $(this).parent(options['applyTo']).removeClass('expanded');
-            });
-
-            options['beforeOpen'].call(this);
-            $this.children(options['contentClass']).slideDown({
-                duration: options['speed'],
-                complete: options['afterOpen'],
-                step: options['stepOpen']
-            });
-            $this.addClass('expanded');
-            $this.children('.collapse-icon').html(options['closeText']);
+        	whats_clicked = this.find(".collapse-item").find(".collapse-cursor")
         }
 
+        whats_clicked.click(function(){
+        	if (options["clickItem"]) {
+	        	var $this = $(this);
+        	}else{
+        		var $this = $(this).parents(".collapse-item")
+        	}
+
+        	 $this.find('.collapse-icon').html(options['openText']);
+
+
+	        if($this.hasClass('expanded')){
+	            $(".collapse-icon").html(options['openText']);
+	            
+	            $this.find('.collapse-icon').html(options['openText']);
+	            
+	            options['beforeClose'].call(this);
+
+	            content.slideUp({
+	                duration: options['speed'],
+	                step: options['stepClose']
+	            });
+
+	            $this.removeClass('expanded');
+	        }else{
+	            $(".collapse-icon").html(options['openText']);
+
+	            content.slideUp(options['speed'],function(){
+	                $(this).parent(options['applyTo']).removeClass('expanded');
+	            });
+
+	            options['beforeOpen'].call(this);
+
+	            $this.find(options['contentClass']).slideDown({
+	                duration: options['speed'],
+	                complete: options['afterOpen'],
+	                step: options['stepOpen']
+	            });
+
+	            $this.addClass('expanded');
+	            $this.find('.collapse-icon').html(options['closeText']);
+	        }
+
         });
+
 
     };
 }(jQuery));

@@ -40,11 +40,8 @@
             $(this).append("<span class='collapse-icon collapse-cursor'>"+options['openText']+"</span>");
           }     
         });
-
-        //content.css('display','none');
         content.each(function(){
           if(!$(this).parent().hasClass("expanded")){
-            console.log($(this).parent());
             $(this).css("display", "none");
           }
         });

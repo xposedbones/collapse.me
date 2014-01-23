@@ -84,6 +84,7 @@
 
 	            $this.removeClass('expanded');
 	        }else{
+	        	article.removeClass('expanded');
 	            $(".collapse-icon").html(options['openText']);
 
 	            content.slideUp(options['speed'],function(){

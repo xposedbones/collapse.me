@@ -34,10 +34,20 @@
 
         article.addClass("collapse-item");
         article.each(function(){
+          if($(this).hasClass("expanded")){
+            $(this).append("<span class='collapse-icon collapse-cursor'>"+options['closeText']+"</span>");
+          }else{
             $(this).append("<span class='collapse-icon collapse-cursor'>"+options['openText']+"</span>");
+          }     
         });
 
-        content.css('display','none');
+        //content.css('display','none');
+        content.each(function(){
+          if(!$(this).parent().hasClass("expanded")){
+            console.log($(this).parent());
+            $(this).css("display", "none");
+          }
+        });
         content.addClass("collapse-content");
 
         if(options['addCSS']){

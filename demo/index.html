@@ -11,7 +11,7 @@
 <body>
 	<section class="collapse">
 		<article>
-			<h2>Title</h2>
+			<h2 class="collapse-trigger">Title</h2>
 			<div class="content"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, inventore esse animi voluptatem. Totam, itaque, qui pariatur architecto saepe nemo distinctio numquam iure quo excepturi dicta fugiat doloremque veritatis harum.</p></div>
 		</article>
 		<article>
@@ -28,7 +28,9 @@
 		</article>
 	</section>
 	<script type="text/javascript">
-		jQuery(".collapse").collapseMe();
+		jQuery(".collapse").collapseMe({
+			trigger: "h2"
+		});
 	</script>
 </body>
 </html>

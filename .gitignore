@@ -28,6 +28,12 @@ local.properties
 # PDT-specific
 .buildpath
 
+.pid
+.collapseMe.sublime-project
+mixture.json
+source/.pid
+source/mixture.json
+
 
 #################
 ## Visual Studio
